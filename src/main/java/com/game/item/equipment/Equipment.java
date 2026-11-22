@@ -22,6 +22,7 @@ public abstract class Equipment extends Item implements Equipable{
             if(armor instanceof Armor && entity instanceof CanEquipArmor){
                 if(!((Armor) armor).isEquipped()) {
                     ((CanEquipArmor) entity).equip((Armor) armor, entity);
+                    break;
                 }
             }
         }
