@@ -2,11 +2,12 @@ package com.game.entity;
 
 import com.game.entity.func.BodyPart;
 import com.game.entity.func.Direction;
+import com.game.item.equipment.Equipment;
 import com.game.server.GameRoll;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Chinese extends Eater {
+public class Chinese extends Eater implements CanEquipArmor{
     private static final Logger LOGGER = LoggerFactory.getLogger(Chinese.class);
 
     public Chinese(double health, String id) {
@@ -17,6 +18,7 @@ public class Chinese extends Eater {
     public void attack(Entity target, double critValue) {
         super.attack(target, critValue);
         doAttack(target,critValue,(t,c) -> {
+            Equipment.quickEquip(this);
             GameRoll.entityMove(this, Direction.Directions.UP, this.getId(), BodyPart.HEAD);
             LOGGER.info("{}能飞", getId());
         });

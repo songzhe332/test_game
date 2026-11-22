@@ -8,6 +8,7 @@ import com.game.entity.poster.PacketPoster;
 import com.game.func.CanAttack;
 import com.game.func.Crit;
 import com.game.func.ExceptionUtils;
+import com.game.item.Food;
 import com.game.item.Item;
 import com.game.place.Place;
 import com.game.server.GameRoll;
@@ -32,8 +33,9 @@ public abstract class Entity implements CanAttack {
     private static final Logger LOGGER = LoggerFactory.getLogger(Entity.class);
     private boolean isFirstSummon;
     private Move move;
-    private final Item[] lootTable = new Item[]{
-            Item.create("apple", "apple")//Entity默认掉落表，仅苹果
+    private static final Item[] lootTable = new Item[]{
+            Food.create(Food.FoodType.APPLE, "apple"),
+            Item.create(Item.ItemType.ARMOR,"normal_chestplate")
     };
 
     private static final BabyGrower BABY_GROWER = new BabyGrower();
@@ -161,6 +163,10 @@ public abstract class Entity implements CanAttack {
     public void setId(String id) {
         if(!canChangeId){return;}
         this.id = id;
+    }
+
+    public static Item[] getLootTable() {
+        return lootTable;
     }
 
     public static void entitySummoned(double health, String id) {

@@ -4,6 +4,7 @@ import com.game.archive.Archive;
 import com.game.client.Config;
 import com.game.entity.Entity;
 import com.game.entity.func.Direction;
+import com.game.item.equipment.Equipable;
 import com.game.server.GameRoll;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -128,6 +129,17 @@ public class Command {
         switch (baseCommand){
             case "exit" -> System.exit(0);
             case "show_archive" -> showEntityArchive(GameRoll.getInstance().getArchive(), args.getFirst());
+            case "equip" -> GameRoll.getEntities().forEach(entity -> {
+                if(entity.getId().equals(args.get(0))){
+                    GameRoll.getItems().forEach(item -> {
+                        if(item.name != null) {
+                            if (item.name.equals(args.get(1)) && item instanceof Equipable) {
+                                ((Equipable) item).equip(entity);
+                            }
+                        }
+                    });
+                }
+            });
             default -> LOGGER.warn("未知命令：{} {}",baseCommand,args);
         }
     }

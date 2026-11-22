@@ -9,7 +9,7 @@ public class Food extends Item {
     private final double healthResume;
 
     public Food(String name, double healthResume) {
-        super(ItemType.FOODS, name);
+        super(ItemType.OTHER, name);
         this.healthResume = healthResume;
 
     }

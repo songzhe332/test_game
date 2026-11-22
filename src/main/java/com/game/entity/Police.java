@@ -1,11 +1,12 @@
 package com.game.entity;
 
+import com.game.item.equipment.Equipment;
 import com.toolkit.util.ColorUtil;
 import com.toolkit.util.MathUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Police extends Entity {
+public class Police extends Entity implements CanEquipArmor{
     private static final Logger LOGGER = LoggerFactory.getLogger(Police.class);
 
     public Police(double health, String id) {
@@ -16,6 +17,7 @@ public class Police extends Entity {
     public void attack(Entity target, double critValue) {
         super.attack(target, critValue);
         doAttack(target, critValue, (t, c) -> {
+            Equipment.quickEquip(this);
             if (MathUtil.isInvalid(target.getHealth())) {
                 LOGGER.info(ColorUtil.bold(
                         ColorUtil.color(

@@ -1,10 +1,11 @@
 package com.game.entity;
 
 import com.game.item.Food;
+import com.game.item.equipment.Equipment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Man extends Eater {
+public class Man extends Eater implements CanEquipArmor{
     private static final Logger LOGGER = LoggerFactory.getLogger(Man.class);
 
     public Man(double health, String id) {
@@ -20,6 +21,7 @@ public class Man extends Eater {
             LOGGER.warn("目标{}已死亡", target);
         }
         doAttack(target, critValue, (t, c) -> {
+            Equipment.quickEquip(this);
             selectFoodThenEat("great apple", this);
         });
     }

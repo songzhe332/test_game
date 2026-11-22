@@ -1,9 +1,8 @@
 package com.game.item;
 
 import com.game.func.ExceptionUtils;
+import com.game.item.equipment.Armor;
 import com.game.server.GameRoll;
-
-import java.util.Objects;
 
 public abstract class Item {
     public final String name;
@@ -14,8 +13,9 @@ public abstract class Item {
     }
 
     public enum ItemType {
-        FOODS,
-        NULL
+        ARMOR,
+        NULL,
+        OTHER
     }
 
     @Override
@@ -23,14 +23,12 @@ public abstract class Item {
         return name;
     }
 
-    public static Item create(String type, String name) {
-        if (Objects.equals(type, "apple")) {
-            return new Apple(name);
-        } else if (Objects.equals(type, "null")) {
-            return new NullItem(name);
-        } else {
-            return null;
-        }
+    public static Item create(ItemType type, String name) {
+        return switch (type){
+            case ARMOR -> new Armor(name);
+            case NULL -> new NullItem(name);
+            default -> new Armor("物品创建失败");
+        };
     }
 
     public static void remove(Item item) {

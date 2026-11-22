@@ -294,7 +294,7 @@ public class GameRoll implements Runnable {
                 getItems().add(Food.create(Food.FoodType.APPLE, "apple"));
                 getItems().add(Food.create(Food.FoodType.GREAT_APPLE, "great apple"));
                 getItems().add(Food.create(Food.FoodType.COKE, "coke"));
-                getItems().add(Item.create("null", null));
+                getItems().add(Item.create(Item.ItemType.NULL, null));
             } catch (Exception e) {
                 LOGGER.error("物品创建出现异常", e);
             } finally {
