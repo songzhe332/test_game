@@ -14,6 +14,7 @@ import com.game.func.Command;
 import com.game.func.Fight;
 import com.game.item.Food;
 import com.game.item.Item;
+import com.game.util.RandomUtil;
 import io.netty.channel.ChannelHandlerContext;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -210,7 +211,7 @@ public class GameRoll implements Runnable {
                                 }
                                 rollCount += 1;
                                 checkPlaceEffect();
-                                if ((rollCount % 2) == 0) {
+                                if ((rollCount % 2) == 0 && RandomUtil.getRandInt(0,5) == 0) {
                                     tickBaby(BABY_LIST);
                                 }
                                 for (Baby baby : BABY_LIST) {
