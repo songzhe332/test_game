@@ -155,6 +155,10 @@ public class GameRoll implements Runnable {
         }
     }
 
+    public static Map<String, Achievement> getAchievements() {
+        return achievements;
+    }
+
     public void fight() {
         File logFile = Main.getLogFile();
         try {
@@ -172,8 +176,10 @@ public class GameRoll implements Runnable {
         }
         Achievement firstFightAch = new Achievement("首战");
         Achievement monsterHunterAch = new Achievement("怪物猎人");
+        Achievement getEquipAch = new Achievement("你爆装备啦！");
         achievements.put(firstFightAch.name(),firstFightAch);
         achievements.put(monsterHunterAch.name(),monsterHunterAch);
+        achievements.put(getEquipAch.name(),getEquipAch);
         Thread createItemThread = getCreateItemThread();
         createItemThread.start();
         try {
@@ -251,6 +257,7 @@ public class GameRoll implements Runnable {
                                 if(!Config.isHeadlessMode()){
                                     break;
                                 }
+                                ITEM_LIST.forEach(item -> achievements.get("你爆装备啦！").tryAchieve(isPlayerControl));
                             } catch (Exception e) {
                                 LOGGER.error("循环出现异常", e);
                             }
