@@ -10,7 +10,13 @@ public class Move {
     private float y;
     private float z;
 
-    public Move(Direction.Directions directions, String id) {
+    public Move(float x,float y,float z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+
+    public void move(Direction.Directions directions,String id){
         switch (directions) {
             case DOWN:
                 y -= 1;
@@ -47,6 +53,18 @@ public class Move {
 
     public float getZ() {
         return z;
+    }
+
+    public void setX(float x) {
+        this.x = x;
+    }
+
+    public void setY(float y) {
+        this.y = y;
+    }
+
+    public void setZ(float z) {
+        this.z = z;
     }
 
     @Override

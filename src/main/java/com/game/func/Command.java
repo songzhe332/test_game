@@ -4,6 +4,7 @@ import com.game.archive.Archive;
 import com.game.client.Config;
 import com.game.entity.Entity;
 import com.game.entity.func.Direction;
+import com.game.entity.object.GameObject;
 import com.game.item.equipment.Equipable;
 import com.game.server.GameRoll;
 import org.slf4j.Logger;
@@ -140,6 +141,10 @@ public class Command {
                     });
                 }
             });
+            case "place" -> {
+                GameObject.placeObject(args.get(0),Float.parseFloat(args.get(1)),Float.parseFloat(args.get(2)),Float.parseFloat(args.get(3)));
+                LOGGER.info("在{},{},{}放置了{}",args.get(1),args.get(2),args.get(3),args.get(0));
+            }
             default -> LOGGER.warn("未知命令：{} {}",baseCommand,args);
         }
     }

@@ -4,6 +4,7 @@ import com.game.entity.baby.Baby;
 import com.game.entity.baby.BabyGrower;
 import com.game.entity.func.Direction;
 import com.game.entity.func.Move;
+import com.game.entity.object.GameObject;
 import com.game.entity.poster.PacketPoster;
 import com.game.func.CanAttack;
 import com.game.func.Crit;
@@ -58,12 +59,21 @@ public abstract class Entity implements CanAttack {
         return damage;
     }
 
+    public Move getMove() {
+        return move;
+    }
+
+    public void setMove(Move move) {
+        this.move = move;
+    }
+
     public Entity(int index, EntityType type, double health, String id) {
         setFirstSummon(true);
         this.type = type;
         this.index = index;
         setId(id);
         setHealth(health);
+        setMove(new Move(0,0,0));
         if (type != EntityType.LOOT) {
             entitySummoned(health, id);
         } else {
@@ -240,12 +250,23 @@ public abstract class Entity implements CanAttack {
         }
     }
 
+    public boolean isOnObject(){
+        for(GameObject object : GameRoll.getObjects()){
+            for(Entity entity : object.getEntityOn()) {
+                if (this == entity) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public void add(){
         GameRoll.addEntity(getIndex(),this);
     }
 
     public void move(Direction.Directions directions, String id) {
-        move = new Move(directions, id);
+        move.move(directions,id);
     }
 
     @Override

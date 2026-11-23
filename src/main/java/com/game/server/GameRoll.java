@@ -10,6 +10,8 @@ import com.game.entity.baby.Baby;
 import com.game.entity.baby.BabyGrower;
 import com.game.entity.func.BodyPart;
 import com.game.entity.func.Direction;
+import com.game.entity.func.Move;
+import com.game.entity.object.GameObject;
 import com.game.func.Command;
 import com.game.func.Fight;
 import com.game.item.Food;
@@ -42,6 +44,7 @@ public class GameRoll implements Runnable {
     private String content;
     private static GameRoll instance;
     private static final CopyOnWriteArrayList<Baby> BABY_LIST = new CopyOnWriteArrayList<>();
+    private static final CopyOnWriteArrayList<GameObject> OBJECT_LIST = new CopyOnWriteArrayList<>();
     private boolean alreadySetAutoFight = false;
     private static Map<String,Achievement> achievements = new HashMap<>();
     private boolean isPlayerControl;
@@ -226,6 +229,15 @@ public class GameRoll implements Runnable {
                                         default -> baby.setHealth(Double.NaN);//完全未知
                                     }
                                 }
+                                for(Entity entity : getEntities()){
+                                    if(entity.isInPlace(Entities.inLava) || entity.isInPlace(Entities.sea)){continue;}
+                                    if(!entity.isOnObject()){
+                                        if(entity.getMove() != null) {
+                                            Move move = entity.getMove();
+                                            move.setY(move.getY() - 0.5f);
+                                        }
+                                    }
+                                }
                                 detectDeath();
                                 if (!alreadySetAutoFight) {
                                     System.out.println("是否要开启自动战斗？");
@@ -345,6 +357,10 @@ public class GameRoll implements Runnable {
 
     public static CopyOnWriteArrayList<Item> getItems() {
         return ITEM_LIST;
+    }
+
+    public static CopyOnWriteArrayList<GameObject> getObjects() {
+        return OBJECT_LIST;
     }
 
     public static void entityMove(Entity entity, Direction.Directions directions, String id, BodyPart part) {
