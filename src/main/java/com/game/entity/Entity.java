@@ -35,9 +35,9 @@ public abstract class Entity implements CanAttack {
     private static final Logger LOGGER = LoggerFactory.getLogger(Entity.class);
     private boolean isFirstSummon;
     private Move move;
-    private static final Item[] lootTable = new Item[]{
-            Food.create(Food.FoodType.APPLE, "apple"),
-            Item.create(Item.ItemType.ARMOR,"normal_chestplate")
+    private static final String[] lootTable = new String[]{
+            "apple",
+            "normal_chestplate"
     };
 
     private static final BabyGrower BABY_GROWER = new BabyGrower();
@@ -107,7 +107,12 @@ public abstract class Entity implements CanAttack {
     }
 
     public Item getLoot() {
-        return lootTable[RandomUtil.getRandInt(0, lootTable.length)];
+        String lootId = lootTable[RandomUtil.getRandInt(0, lootTable.length)];
+        return switch (lootId){
+            case "apple" -> Food.create(Food.FoodType.APPLE,lootId);
+            case "normal_chestplate" -> Item.create(Item.ItemType.ARMOR,lootId);
+            default -> null;
+        };
     }
 
     public double getCritValue() {
@@ -184,8 +189,8 @@ public abstract class Entity implements CanAttack {
         this.id = id;
     }
 
-    public static Item[] getLootTable() {
-        return lootTable;
+    public static String[] getLootTable() {
+        return lootTable.clone();
     }
 
     public static void entitySummoned(double health, String id) {
