@@ -6,8 +6,6 @@ import com.game.entity.Entities;
 import com.game.entity.Entity;
 import com.game.entity.func.Direction;
 import com.game.entity.object.GameObject;
-import com.game.entity.object.fluid.Lava;
-import com.game.entity.object.fluid.Water;
 import com.game.item.equipment.Equipable;
 import com.game.server.GameRoll;
 import org.slf4j.Logger;
@@ -151,11 +149,7 @@ public class Command {
                 float x = Float.parseFloat(args.get(1));
                 float y = Float.parseFloat(args.get(2));
                 float z = Float.parseFloat(args.get(3));
-                switch (objectId){
-                    case "water" -> Water.placeObject("water",x,y,z);
-                    case "lava" -> Lava.placeObject("lava",x,y,z);
-                    default -> GameObject.placeObject(objectId,x,y,z);
-                }
+                GameObject.placeObject(objectId,x,y,z);
                 LOGGER.info("在{},{},{}放置了{}",x,y,z,objectId);
             }
             case "test" -> {
