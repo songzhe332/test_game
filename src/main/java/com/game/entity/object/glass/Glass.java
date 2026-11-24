@@ -13,12 +13,12 @@ public class Glass extends GameObject {
         Move attackerMove = attacker.getMove();
         Move targetMove = target.getMove();
         boolean hitGlass = false;
-        if(attackerMove.getY() == targetMove.getY()){
+        if(attackerMove.getY() == targetMove.getY() && attacker.getMove().getY() == getMove().getY()){
             for(float dx = attackerMove.getX();dx <= attackerMove.getX() + 64.0;dx ++){
                 for(float dz = attackerMove.getZ();dz <= attackerMove.getZ() + 64.0;dz ++) {
                     if (dx == getMove().getX() ) {
                         if(dz == getMove().getZ()){
-                            if(targetMove.getX() >= 0 && targetMove.getZ() >= 0) {
+                            if(targetMove.getX() >= getMove().getX() && targetMove.getZ() >= getMove().getZ()) {
                                 hitGlass = targetMove.getX() - dx < 5 && targetMove.getZ() - dz < 5;
                             }
                         }
