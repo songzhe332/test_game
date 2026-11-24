@@ -23,6 +23,7 @@ import java.util.Objects;
 @SuppressWarnings("unused")
 public abstract class Entity implements CanAttack {
     private double health;
+    private double armor;
     private String id;
     private final EntityType type;
     private boolean isDead;
@@ -153,6 +154,14 @@ public abstract class Entity implements CanAttack {
         return Math.max(0.0, health);
     }
 
+    public double getArmor() {
+        return Math.max(0.0,armor);
+    }
+
+    public void setArmor(double armor) {
+        this.armor = armor <= 0 ? 0 : armor;
+    }
+
     public String getId() {
         return id;
     }
@@ -218,9 +227,10 @@ public abstract class Entity implements CanAttack {
      */
     public void attack(Entity target, double critValue) {
         doAttack(target,critValue,(t,c) -> {
+            double actualDamage = t.getArmor() <= c ? c - t.getArmor() : 0.0;
             if (t.getHealth() > 0) {
-                LOGGER.info("{}攻击了{}扣除了{}点血量", this.getId(), t.getId(), c);
-                t.setHealth(t.getHealth() - c);
+                LOGGER.info("{}攻击了{}扣除了{}点血量", this.getId(), t.getId(), actualDamage);
+                t.setHealth(t.getHealth() - actualDamage);
             } else {
                 LOGGER.warn("目标{}已死亡", t);
             }
