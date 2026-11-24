@@ -208,13 +208,13 @@ public class GameRoll implements Runnable {
                                 }
                                 achievements.get("首战").tryAchieve(rollCount <= 1);
                                 LOGGER.info("---第{}轮---", rollCount);
+                                rollCount += 1;
                                 System.out.println("请输入预命令：");
                                 if(Config.isHeadlessMode() && !FIGHT.isAutoFight()) {
                                     Scanner commandScanner = Config.INPUT_SCANNER;
                                     String commandContent = commandScanner.nextLine();
                                     COMMAND.handlePreCommand(commandContent + Command.COMMAND_END);
                                 }
-                                rollCount += 1;
                                 checkPlaceEffect();
                                 if ((rollCount % 2) == 0 && RandomUtil.getRandInt(0,5) == 0) {
                                     tickBaby(BABY_LIST);
