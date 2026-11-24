@@ -1,3 +1,5 @@
+package ai;
+
 import com.game.entity.Cow;
 import com.game.entity.Entity;
 import com.game.entity.func.Direction;
