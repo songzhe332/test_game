@@ -15,7 +15,7 @@ htmlReport/
 coverage-tests/
 coverage-report/
 .workbuddy/
-src/test/ai/
+src/test/java/ai/
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
