@@ -2,6 +2,7 @@ package com.game.func;
 
 import com.game.archive.Archive;
 import com.game.client.Config;
+import com.game.entity.Entities;
 import com.game.entity.Entity;
 import com.game.entity.func.Direction;
 import com.game.entity.object.GameObject;
@@ -131,10 +132,12 @@ public class Command {
             case "exit" -> System.exit(0);
             case "show_archive" -> showEntityArchive(GameRoll.getInstance().getArchive(), args.getFirst());
             case "equip" -> GameRoll.getEntities().forEach(entity -> {
-                if(entity.getId().equals(args.get(0))){
+                String equipTarget = args.get(0);
+                String equipment = args.get(1);
+                if(entity.getId().equals(equipTarget)){
                     GameRoll.getItems().forEach(item -> {
                         if(item.name != null) {
-                            if (item.name.equals(args.get(1)) && item instanceof Equipable) {
+                            if (item.name.equals(equipment) && item instanceof Equipable) {
                                 ((Equipable) item).equip(entity);
                             }
                         }
@@ -142,15 +145,39 @@ public class Command {
                 }
             });
             case "place" -> {
-                GameObject.placeObject(args.get(0),Float.parseFloat(args.get(1)),Float.parseFloat(args.get(2)),Float.parseFloat(args.get(3)));
-                LOGGER.info("在{},{},{}放置了{}",args.get(1),args.get(2),args.get(3),args.get(0));
+                String objectId = args.get(0);
+                float x = Float.parseFloat(args.get(1));
+                float y = Float.parseFloat(args.get(2));
+                float z = Float.parseFloat(args.get(3));
+                GameObject.placeObject(objectId,x,y,z);
+                LOGGER.info("在{},{},{}放置了{}",x,y,z,objectId);
             }
             case "test" -> {
-                if(args.get(0).equals("add_object_to_entity_list")){
+                String testId = args.get(0);
+                if(testId.equals("add_object_to_entity_list")){
+                    String objectId = args.get(1);
                     for (GameObject object : GameRoll.getObjects()) {
-                        if(object.getId().equals(args.get(1))){
+                        if(object.getId().equals(objectId)){
                             GameRoll.getEntities().add(object);
                             break;
+                        }
+                    }
+                } else if (testId.equals("second_time_add_to_place")) {
+                    String entityId = args.get(1);
+                    for(Entity entity : GameRoll.getEntities()){
+                        if(entityId.equals(entity.getId())){
+                            entity.getPlace().addEntity(entity);
+                        } else if (args.get(1).equals("other")) {
+                            entityId = args.get(2);
+                            if(entityId.equals(entity.getId())) {
+                                String placeId = args.get(3);
+                                switch (placeId) {
+                                    case "grass_land" -> Entities.grassLand.addEntity(entity);
+                                    case "sea" -> Entities.sea.addEntity(entity);
+                                    case "in_lava" -> Entities.inLava.addEntity(entity);
+                                    default -> LOGGER.warn("未知场地：{}", placeId);
+                                }
+                            }
                         }
                     }
                 }
