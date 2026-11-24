@@ -145,6 +145,16 @@ public class Command {
                 GameObject.placeObject(args.get(0),Float.parseFloat(args.get(1)),Float.parseFloat(args.get(2)),Float.parseFloat(args.get(3)));
                 LOGGER.info("在{},{},{}放置了{}",args.get(1),args.get(2),args.get(3),args.get(0));
             }
+            case "test" -> {
+                if(args.get(0).equals("add_object_to_entity_list")){
+                    for (GameObject object : GameRoll.getObjects()) {
+                        if(object.getId().equals(args.get(1))){
+                            GameRoll.getEntities().add(object);
+                            break;
+                        }
+                    }
+                }
+            }
             default -> LOGGER.warn("未知命令：{} {}",baseCommand,args);
         }
     }
