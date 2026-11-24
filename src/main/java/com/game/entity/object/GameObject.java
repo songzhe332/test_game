@@ -31,7 +31,7 @@ public class GameObject extends Entity {
         return null;
     }
 
-    public static void placeObject(String id,float x,float y,float z){
+    public static GameObject placeObject(String id,float x,float y,float z){
         GameObject gameObject = switch (id){
             case "water" -> new Water();
             case "lava" -> new Lava();
@@ -44,6 +44,8 @@ public class GameObject extends Entity {
             move.setY(y);
             move.setZ(z);
         }
+
+        return gameObject;
     }
 
     @Override
