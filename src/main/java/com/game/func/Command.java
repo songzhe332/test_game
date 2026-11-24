@@ -163,10 +163,11 @@ public class Command {
                         }
                     }
                 } else if (testId.equals("second_time_add_to_place")) {
-                    String entityId = args.get(1);
                     for(Entity entity : GameRoll.getEntities()){
+                        String entityId = args.get(1);
                         if(entityId.equals(entity.getId())){
                             entity.getPlace().addEntity(entity);
+                            break;
                         } else if (args.get(1).equals("other")) {
                             entityId = args.get(2);
                             if(entityId.equals(entity.getId())) {
