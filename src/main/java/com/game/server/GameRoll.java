@@ -12,6 +12,8 @@ import com.game.entity.func.BodyPart;
 import com.game.entity.func.Direction;
 import com.game.entity.func.Move;
 import com.game.entity.object.GameObject;
+import com.game.entity.object.fluid.Fluid;
+import com.game.entity.object.fluid.Lava;
 import com.game.func.Command;
 import com.game.func.Fight;
 import com.game.item.Food;
@@ -229,15 +231,8 @@ public class GameRoll implements Runnable {
                                         default -> baby.setHealth(Double.NaN);//完全未知
                                     }
                                 }
-                                for(Entity entity : getEntities()){
-                                    if(entity.isInPlace(Entities.inLava) || entity.isInPlace(Entities.sea)){continue;}
-                                    if(!entity.isOnObject()){
-                                        if(entity.getMove() != null) {
-                                            Move move = entity.getMove();
-                                            move.setY(move.getY() - 0.5f);
-                                        }
-                                    }
-                                }
+                                tickGravity();
+                                tickFluid();
                                 detectDeath();
                                 if (!alreadySetAutoFight) {
                                     System.out.println("是否要开启自动战斗？");
@@ -370,5 +365,35 @@ public class GameRoll implements Runnable {
 
     public Archive getArchive() {
         return archive;
+    }
+
+    public void tickGravity(){
+        for(Entity entity : getEntities()){
+            if(entity.isInPlace(Entities.inLava) || entity.isInPlace(Entities.sea)){continue;}
+            if(!entity.isOnObject()){
+                if(entity.getMove() != null) {
+                    Move move = entity.getMove();
+                    move.setY(move.getY() - 0.5f);
+                }
+            }
+        }
+    }
+
+    public void tickFluid(){
+        for(GameObject object : getObjects()){
+            if(object instanceof Fluid fluid){
+                if(fluid instanceof Lava lava){
+                    for (Entity entity : lava.getEntityOn()) {
+                        lava.lavaDamage(entity,3);
+                    }
+                }
+                fluid.flow(RandomUtil.getRandInt(0,10) == 0 ? Direction.Directions.FORWARD :
+                        RandomUtil.getRandInt(0,8) == 0 ? Direction.Directions.BACKWARD :
+                                RandomUtil.getRandInt(0,4) == 0 ? Direction.Directions.LEFT :
+                                        RandomUtil.getRandInt(0,2) == 0 ? Direction.Directions.RIGHT :
+                                                Direction.Directions.DOWN
+                );
+            }
+        }
     }
 }

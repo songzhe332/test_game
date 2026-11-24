@@ -2,6 +2,8 @@ package com.game.entity.object;
 
 import com.game.entity.Entity;
 import com.game.entity.func.Move;
+import com.game.entity.object.fluid.Lava;
+import com.game.entity.object.fluid.Water;
 import com.game.func.Crit;
 import com.game.server.GameRoll;
 
@@ -30,7 +32,11 @@ public class GameObject extends Entity {
     }
 
     public static void placeObject(String id,float x,float y,float z){
-        GameObject gameObject = new GameObject(id);
+        GameObject gameObject = switch (id){
+            case "water" -> new Water();
+            case "lava" -> new Lava();
+            default -> new GameObject(id);
+        };
         gameObject.add();
         Move move = gameObject.getMove();
         if(move != null) {
