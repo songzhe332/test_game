@@ -4,6 +4,7 @@ import com.game.entity.Entity;
 import com.game.entity.func.Move;
 import com.game.entity.object.fluid.Lava;
 import com.game.entity.object.fluid.Water;
+import com.game.entity.object.glass.Glass;
 import com.game.func.Crit;
 import com.game.server.GameRoll;
 
@@ -35,6 +36,7 @@ public class GameObject extends Entity {
         GameObject gameObject = switch (id){
             case "water" -> new Water();
             case "lava" -> new Lava();
+            case "glass" -> new Glass();
             default -> new GameObject(id);
         };
         gameObject.add();

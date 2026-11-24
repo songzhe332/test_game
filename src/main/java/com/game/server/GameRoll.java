@@ -14,6 +14,7 @@ import com.game.entity.func.Move;
 import com.game.entity.object.GameObject;
 import com.game.entity.object.fluid.Fluid;
 import com.game.entity.object.fluid.Lava;
+import com.game.entity.object.glass.Glass;
 import com.game.func.Command;
 import com.game.func.Fight;
 import com.game.item.Food;
@@ -138,11 +139,24 @@ public class GameRoll implements Runnable {
             LOGGER.warn("战斗实体不存在");
             return;
         }
-        FIGHT.fight(attacker, target);
+
+        boolean canHit = true;
+
+        for(GameObject object : getObjects()) {
+            if(object instanceof Glass glass) {
+                canHit = !glass.reflectAttack(attacker,target);
+                break;
+            }
+        }
+
+        if(canHit){
+            FIGHT.fight(attacker, target);
+        }
         achievements.get("怪物猎人").tryAchieve(isPlayerControl);
     }
 
     private void doAutoFight() {
+        //不受玻璃影响
         for (int i = 0; i < ENTITY_LIST.size() - 1; i++) {
             Entity entity = ENTITY_LIST.get(i);
             Entity next = ENTITY_LIST.get(i + 1);

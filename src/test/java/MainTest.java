@@ -1,17 +1,19 @@
+import ai.FoodChimera;
 import com.game.archive.Archive;
 import com.game.entity.Entities;
 import com.game.func.Command;
+import com.game.item.Item;
 import com.game.server.GameRoll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class MainTest {
-    @Test
-    public void test() {
-        //在此处测试
-        new GameRoll();
-        String needSplit = "show_archive cow]";
-        new Command().handlePreCommand(needSplit);
+    public static void main(String[] args) {
+        //测试chimera
+        GameRoll gameRoll = new GameRoll();
+        FoodChimera chimera = new FoodChimera("chimera", Item.ItemType.ARMOR);
+        GameRoll.getItems().add(chimera);
+        gameRoll.fight();
     }
 
     @Test
