@@ -265,7 +265,7 @@ public class GameRoll implements Runnable {
                                 if(!Config.isHeadlessMode()){
                                     break;
                                 }
-                                ITEM_LIST.forEach(item -> achievements.get("你爆装备啦！").tryAchieve(isPlayerControl));
+                                ITEM_LIST.forEach(item -> achievements.get("你爆装备啦！").tryAchieve(isPlayerControl && item.getType().equals(Item.ItemType.ARMOR)));
                             } catch (Exception e) {
                                 LOGGER.error("循环出现异常", e);
                             }

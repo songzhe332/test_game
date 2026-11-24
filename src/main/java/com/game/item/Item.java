@@ -6,9 +6,11 @@ import com.game.server.GameRoll;
 
 public abstract class Item {
     public final String name;
+    private final ItemType type;
 
     public Item(ItemType type, String name) {
         this.name = name;
+        this.type = type;
         ExceptionUtils.nullPointerExceptionTrigger(type);
     }
 
@@ -33,5 +35,9 @@ public abstract class Item {
 
     public static void remove(Item item) {
         GameRoll.getItems().remove(item);
+    }
+
+    public ItemType getType() {
+        return type;
     }
 }
