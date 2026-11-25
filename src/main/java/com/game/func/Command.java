@@ -6,6 +6,7 @@ import com.game.entity.Entities;
 import com.game.entity.Entity;
 import com.game.entity.func.Direction;
 import com.game.entity.object.GameObject;
+import com.game.item.Item;
 import com.game.item.equipment.Equipable;
 import com.game.server.GameRoll;
 import org.slf4j.Logger;
@@ -14,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Stream;
 
 import static com.game.entity.func.BodyPart.FOOT;
 
@@ -99,6 +101,10 @@ public class Command {
         }
     }
 
+    public void commandError(String msg){
+        LOGGER.error("命令执行失败：{}",msg);
+    }
+
     public void handlePreCommand(String command){
         StringBuilder sb = new StringBuilder();
         ArrayList<String> commands = new ArrayList<>();
@@ -134,6 +140,16 @@ public class Command {
             case "equip" -> GameRoll.getEntities().forEach(entity -> {
                 String equipTarget = args.get(0);
                 String equipment = args.get(1);
+                Stream<Entity> entityStream = GameRoll.getEntities().stream();
+                Stream<Item> itemStream = GameRoll.getItems().stream();
+                entityStream.filter(e -> e.getId() != null)
+                        .filter(e -> e.getId().equals(equipTarget))
+                        .findAny()
+                        .orElseThrow(() -> new CommandException("实体不存在"));
+                itemStream.filter(i -> i.name != null)
+                        .filter(i -> i.name.equals(equipment))
+                        .findAny()
+                        .orElseThrow(() -> new CommandException("装备不存在"));
                 if(entity.getId().equals(equipTarget)){
                     GameRoll.getItems().forEach(item -> {
                         if(item.name != null) {

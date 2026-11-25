@@ -42,7 +42,7 @@ public class GameRoll implements Runnable {
     private static final CopyOnWriteArrayList<Entity> ENTITY_LIST = new CopyOnWriteArrayList<>();
     private static final CopyOnWriteArrayList<Item> ITEM_LIST = new CopyOnWriteArrayList<>();
     private static final Fight FIGHT = new Fight();
-    private static final Command COMMAND = new Command();
+    public static final Command COMMAND = new Command();
     private ChannelHandlerContext context;
     private String content;
     private static GameRoll instance;
