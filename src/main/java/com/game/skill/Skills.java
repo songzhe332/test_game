@@ -2,10 +2,12 @@ package com.game.skill;
 
 import com.game.entity.Entity;
 import com.game.entity.func.Move;
-import com.game.entity.object.fluid.Fluid;
 import com.game.server.GameRoll;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Skills {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Skills.class);
     public static void magic(Entity entity,float damage){
         entity.setHealth(entity.getHealth() - (damage > 0 ? damage : 0));
     }
@@ -20,12 +22,19 @@ public class Skills {
             float entityZ = entity.getMove().getZ();
             double distance = Math.sqrt(Math.pow((entityX - x),2) + Math.pow((entityY - y),2) + Math.pow((entityZ - z),2));
             if(distance <= 15){
-                Fluid center = ((Fluid) Fluid.placeObject("water",x,y,z)).setMaxFluids(15);
-                for(Fluid fluid : center.getFluidsMadeBySelf()){
-                    for(Entity hackWithoutHeight : fluid.getEntityOn()){
-                        magic(hackWithoutHeight, fluid.getFluidsMadeBySelf().size());
-                    }
+                int cost = 1;
+                if(distance > 10){
+                    cost += 6;
                 }
+                if(distance > 5){
+                    cost += 3;
+                }
+                if(distance < 3){
+                    cost /= 2;
+                }
+                int damage = 30 - cost;
+                magic(entity, damage);
+                LOGGER.info("{}被炸伤，距离：{}，伤害{}",entity,distance,damage);
             }
         }
     }
