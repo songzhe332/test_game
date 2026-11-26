@@ -2,6 +2,7 @@ package com.game.skill;
 
 import com.game.entity.Entity;
 import com.game.entity.func.Move;
+import com.game.entity.object.fluid.Fluid;
 import com.game.server.GameRoll;
 
 public class Skills {
@@ -19,8 +20,11 @@ public class Skills {
             float entityZ = entity.getMove().getZ();
             double distance = Math.sqrt(Math.pow((entityX - x),2) + Math.pow((entityY - y),2) + Math.pow((entityZ - z),2));
             if(distance <= 15){
-                for(float damage = 30;damage > distance;damage --) {
-                    magic(entity, damage);
+                Fluid center = ((Fluid) Fluid.placeObject("water",x,y,z)).setMaxFluids(15);
+                for(Fluid fluid : center.getFluidsMadeBySelf()){
+                    for(Entity hackWithoutHeight : fluid.getEntityOn()){
+                        magic(hackWithoutHeight, fluid.getFluidsMadeBySelf().size());
+                    }
                 }
             }
         }

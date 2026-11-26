@@ -7,7 +7,7 @@ import com.game.entity.object.GameObject;
 import java.util.ArrayList;
 
 public class Fluid extends GameObject {
-    private static final int MAX_FLOWS = 7;
+    private int maxFluids = 7;
     private final ArrayList<Fluid> fluidsMadeBySelf = new ArrayList<>();
     private boolean hasFather = false;
 
@@ -24,8 +24,12 @@ public class Fluid extends GameObject {
         return this;
     }
 
+    public ArrayList<Fluid> getFluidsMadeBySelf() {
+        return fluidsMadeBySelf;
+    }
+
     public void flow(Direction.Directions direction) {
-        if (fluidsMadeBySelf.size() <= MAX_FLOWS) {
+        if (fluidsMadeBySelf.size() <= maxFluids) {
             if(this.hasFather){return;}
             Move move = getMove();
             switch (direction) {
@@ -36,5 +40,10 @@ public class Fluid extends GameObject {
                 case BACKWARD -> add(((Fluid) placeObject(getId(), move.getX(), move.getY(), move.getZ() - 1)).setHasFather(true));
             }
         }
+    }
+
+    public Fluid setMaxFluids(int maxFluids) {
+        this.maxFluids = maxFluids;
+        return this;
     }
 }
