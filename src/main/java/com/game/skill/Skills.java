@@ -30,7 +30,7 @@ public class Skills {
                     cost += 3;
                 }
                 if(distance < 3){
-                    cost /= 2;
+                    cost -= 2;
                 }
                 int damage = 30 - cost;
                 magic(entity, damage);
