@@ -32,7 +32,10 @@ public class Skills {
                 if(distance < 3){
                     cost -= 2;
                 }
-                int damage = 30 - cost;
+                if (distance == 0){
+                    cost = (int) (cost - entity.getHealth());
+                }
+                int damage = (int) (30 - cost - entity.getArmor());
                 magic(entity, damage);
                 LOGGER.info("{}被炸伤，距离：{}，伤害{}",entity,distance,damage);
             }
