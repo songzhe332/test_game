@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Stream;
@@ -142,14 +143,14 @@ public class Command {
                 String equipment = args.get(1);
                 Stream<Entity> entityStream = GameRoll.getEntities().stream();
                 Stream<Item> itemStream = GameRoll.getItems().stream();
-                entityStream.filter(e -> e.getId() != null)
+                Optional<Entity> target = entityStream.filter(e -> e.getId() != null)
                         .filter(e -> e.getId().equals(equipTarget))
-                        .findAny()
-                        .orElseThrow(() -> new CommandException("实体不存在"));
+                        .findAny();
+                target.orElseThrow(() -> new CommandException("实体不存在",this,equipTarget,Double.NaN));
                 itemStream.filter(i -> i.name != null)
                         .filter(i -> i.name.equals(equipment))
                         .findAny()
-                        .orElseThrow(() -> new CommandException("装备不存在"));
+                        .orElseThrow(() -> new CommandException("装备不存在",this));
                 if(entity.getId().equals(equipTarget)){
                     GameRoll.getItems().forEach(item -> {
                         if(item.name != null) {
@@ -170,33 +171,49 @@ public class Command {
             }
             case "test" -> {
                 String testId = args.get(0);
-                if(testId.equals("add_object_to_entity_list")){
-                    String objectId = args.get(1);
-                    for (GameObject object : GameRoll.getObjects()) {
-                        if(object.getId().equals(objectId)){
-                            GameRoll.getEntities().add(object);
-                            break;
+                switch (testId) {
+                    case "add_object_to_entity_list" -> {
+                        String objectId = args.get(1);
+                        for (GameObject object : GameRoll.getObjects()) {
+                            if (object.getId().equals(objectId)) {
+                                GameRoll.getEntities().add(object);
+                                break;
+                            }
                         }
                     }
-                } else if (testId.equals("second_time_add_to_place")) {
-                    for(Entity entity : GameRoll.getEntities()){
-                        String entityId = args.get(1);
-                        if(entityId.equals(entity.getId())){
-                            entity.getPlace().addEntity(entity);
-                            break;
-                        } else if (args.get(1).equals("other")) {
-                            entityId = args.get(2);
-                            if(entityId.equals(entity.getId())) {
-                                String placeId = args.get(3);
-                                switch (placeId) {
-                                    case "grass_land" -> Entities.grassLand.addEntity(entity);
-                                    case "sea" -> Entities.sea.addEntity(entity);
-                                    case "in_lava" -> Entities.inLava.addEntity(entity);
-                                    default -> LOGGER.warn("未知场地：{}", placeId);
+                    case "second_time_add_to_place" -> {
+                        for (Entity entity : GameRoll.getEntities()) {
+                            String entityId = args.get(1);
+                            if (entityId.equals(entity.getId())) {
+                                entity.getPlace().addEntity(entity);
+                                break;
+                            } else if (args.get(1).equals("other")) {
+                                entityId = args.get(2);
+                                if (entityId.equals(entity.getId())) {
+                                    String placeId = args.get(3);
+                                    switch (placeId) {
+                                        case "grass_land" -> Entities.grassLand.addEntity(entity);
+                                        case "sea" -> Entities.sea.addEntity(entity);
+                                        case "in_lava" -> Entities.inLava.addEntity(entity);
+                                        default -> LOGGER.warn("未知场地：{}", placeId);
+                                    }
                                 }
                             }
                         }
                     }
+                    case "create_item" -> {
+                        String itemType = args.get(1);
+                        String itemName = args.get(2);
+                        boolean shouldAdd = Boolean.parseBoolean(args.get(3));
+                        Item item = Item.create(Item.ItemType.valueOf(itemType),itemName);
+                        if(shouldAdd){
+                            GameRoll.getItems().add(item);
+                        }
+                        else{
+                            LOGGER.warn("{}未被添加至物品列表",itemName);
+                        }
+                    }
+                    default -> LOGGER.warn("未知测试项：{}",testId);
                 }
             }
             default -> LOGGER.warn("未知命令：{} {}",baseCommand,args);
