@@ -2,6 +2,7 @@ package com.game.entity.object;
 
 import com.game.entity.Entity;
 import com.game.entity.func.Move;
+import com.game.entity.object.bomb.Bomb;
 import com.game.entity.object.fluid.Lava;
 import com.game.entity.object.fluid.Water;
 import com.game.entity.object.glass.Glass;
@@ -37,6 +38,7 @@ public class GameObject extends Entity {
             case "water" -> new Water();
             case "lava" -> new Lava();
             case "glass" -> new Glass();
+            case "bomb" -> new Bomb();
             default -> new GameObject(id);
         };
         gameObject.add();

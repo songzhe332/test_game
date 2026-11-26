@@ -5,7 +5,9 @@ import com.game.client.Config;
 import com.game.entity.Entities;
 import com.game.entity.Entity;
 import com.game.entity.func.Direction;
+import com.game.entity.func.Move;
 import com.game.entity.object.GameObject;
+import com.game.entity.object.bomb.Bomb;
 import com.game.item.Item;
 import com.game.item.equipment.Equipable;
 import com.game.server.GameRoll;
@@ -168,6 +170,17 @@ public class Command {
                 float z = Float.parseFloat(args.get(3));
                 GameObject.placeObject(objectId,x,y,z);
                 LOGGER.info("在{},{},{}放置了{}",x,y,z,objectId);
+            }
+            case "explode" -> {
+                float x = Float.parseFloat(args.get(0));
+                float y = Float.parseFloat(args.get(1));
+                float z = Float.parseFloat(args.get(2));
+                for(GameObject object : GameRoll.getObjects()){
+                    Move move = object.getMove();
+                    if(object instanceof Bomb bomb && move.getX() == x && move.getY() == y && move.getZ() == z){
+                        bomb.explode();
+                    }
+                }
             }
             case "test" -> {
                 String testId = args.get(0);
