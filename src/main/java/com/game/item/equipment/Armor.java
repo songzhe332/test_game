@@ -8,16 +8,19 @@ public class Armor extends Equipment{
     private static final Logger LOGGER = LoggerFactory.getLogger(Armor.class);
     private Entity armored;
     private double defense;
-    public Armor(String name,double defense) {
+    private double defenseRate;
+    public Armor(String name,double defense,double defenseRate) {
         super(ItemType.ARMOR, name);
         this.defense = defense;
+        this.defenseRate = defenseRate;
     }
 
     @Override
     public void equip(Entity needArmor) {
         this.armored = needArmor;
         armored.setArmor(armored.getArmor() + defense);
-        LOGGER.info("{}装备了{}获得了{}的防御力",armored,name,defense);
+        armored.setArmorRate(armored.getArmorRate() + defenseRate);
+        LOGGER.info("{}装备了{}获得了{}点和{}%的防御力",armored,name,defense,defenseRate);
     }
 
     public double getDefense() {
@@ -26,6 +29,14 @@ public class Armor extends Equipment{
 
     public void setDefense(double defense) {
         this.defense = defense;
+    }
+
+    public double getDefenseRate() {
+        return defenseRate;
+    }
+
+    public void setDefenseRate(double defenseRate) {
+        this.defenseRate = defenseRate;
     }
 
     public Entity getArmored() {

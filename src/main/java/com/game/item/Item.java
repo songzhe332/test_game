@@ -27,9 +27,9 @@ public abstract class Item {
 
     public static Item create(ItemType type, String name) {
         return switch (type){
-            case ARMOR -> new Armor(name,5.0);
+            case ARMOR -> new Armor(name,5.0,2.0);
             case NULL -> new NullItem(name);
-            default -> new Armor("物品创建失败",0.0);
+            default -> new Armor("物品创建失败",0.0,0.0);
         };
     }
 

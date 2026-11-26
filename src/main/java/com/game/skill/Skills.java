@@ -22,23 +22,28 @@ public class Skills {
             float entityZ = entity.getMove().getZ();
             double distance = Math.sqrt(Math.pow((entityX - x),2) + Math.pow((entityY - y),2) + Math.pow((entityZ - z),2));
             if(distance <= 15){
-                int cost = 1;
-                if(distance > 10){
-                    cost += 6;
-                }
-                if(distance > 5){
-                    cost += 3;
-                }
-                if(distance < 3){
-                    cost -= 2;
-                }
-                if (distance == 0){
-                    cost = (int) (cost - entity.getHealth());
-                }
-                int damage = (int) (30 - cost - entity.getArmor());
+                int damage = calcDamage(distance,entity);
                 magic(entity, damage);
                 LOGGER.info("{}被炸伤，距离：{}，伤害{}",entity,distance,damage);
             }
         }
+    }
+
+    public static int calcDamage(double distance,Entity entity){
+        int cost = 1;
+        if(distance > 10){
+            cost += 6;
+        }
+        if(distance > 5){
+            cost += 3;
+        }
+        if(distance < 3){
+            cost -= 2;
+        }
+        if (distance == 0){
+            cost = (int) (cost - entity.getHealth());
+        }
+        int baseDamage = 30 - cost;
+        return (int) (baseDamage - (baseDamage * (entity.getArmorRate() / 100)));
     }
 }

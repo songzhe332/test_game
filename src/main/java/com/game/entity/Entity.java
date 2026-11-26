@@ -24,6 +24,7 @@ import java.util.Objects;
 public abstract class Entity implements CanAttack {
     private double health;
     private double armor;
+    private double armorRate;
     private String id;
     private final EntityType type;
     private boolean isDead;
@@ -46,6 +47,10 @@ public abstract class Entity implements CanAttack {
 
     public int getIndex() {
         return index;
+    }
+
+    public double getArmorRate() {
+        return armorRate;
     }
 
     public void setIndex(int index) {
@@ -182,6 +187,10 @@ public abstract class Entity implements CanAttack {
         } else if (!isFirstSummon()) {
             LOGGER.info("{}的血量由{}变为{}", id, originHealth, this.health);
         }
+    }
+
+    public void setArmorRate(double armorRate) {
+        this.armorRate = armorRate;
     }
 
     public void setId(String id) {
